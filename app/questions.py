@@ -175,12 +175,12 @@ question_cols = [
 ]
 
 question_names = [
-    "Variable: External: Gender",
-    "Variable: External: Age (write-in)",
-    "Variable: External: Urban/Rural (self-report)",
-    "Variable: External: Annual Household Income (US)",
-    "Variable: External: MainRegionName",
-    "Variable: External: Food - Main Grocery Shop",
+    "External Variable: Gender",
+    "External Variable: Age (write-in)",
+    "External Variable: Urban/Rural (self-report)",
+    "External Variable: Annual Household Income (US)",
+    "External Variable: MainRegionName",
+    "External Variable: Food - Main Grocery Shop",
     "1. Who do you grocery shop for?",
     "2. How many people in total do you shop for?",
     '3. How often do you get groceries?',
@@ -316,7 +316,7 @@ question_types = [
     'Likert',
 ]
 
-def get_question_df():
+def create_question_df():
     q_columns = pd.Series(question_cols)
     q_names = pd.Series(question_names)
     q_types = pd.Series(question_types)

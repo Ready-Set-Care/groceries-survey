@@ -3,7 +3,7 @@ import streamlit as st
 
 import questionClass
 
-def prepare_data(path: str) -> pd.DataFrame:
+def prepare_data(path: str, caregivers=False) -> pd.DataFrame:
     """
     Load and prepare the data 
 
@@ -15,6 +15,22 @@ def prepare_data(path: str) -> pd.DataFrame:
     """
     df = pd.read_csv(path, index_col=0)
     df['Variable: External: Q2: Age (write-in)'] = pd.to_numeric(df['Variable: External: Q2: Age (write-in)'])
+
+    income_map = {
+        "Less than $14,999": 'Less than $24,999',
+        '$15,000 - $24,999': 'Less than $24,999',
+        '$25,000 - $49,999': '$25,000 - $49,999',
+        '$50,000 - $79,999': '$50,000 - $99,999',
+        '$80,000 - $99,999': '$50,000 - $99,999',
+        '$100,000 - $149,999': '$100,000 - $199,999',
+        '$150,000 - $199,999': '$100,000 - $199,999',
+        'More than $200,000': 'More than $200,000',
+    }
+    
+    if caregivers:
+        df['Annual Household Income'] = df["Variable: External: Q7: Annual Income (US)"].map(income_map)
+    else:
+        df['Annual Household Income'] = df["Variable: External: Q5: Annual Income (US)"].map(income_map)
 
     return df
 
@@ -30,20 +46,23 @@ def combine_data(gen_pop, caregivers) -> pd.DataFrame:
 
     return df
 
-def select_data(df):
-    display_data = st.radio(
-        "Select the data:",
-        ("All", 'General Population', 'Caregivers')
-    )
+# def select_data(df):
+#     display_data = st.radio(
+#         "Select the data:",
+#         ("All", 'General Population', 'Caregivers')
+#     )
     
-    if display_data == 'General Population':
-        data = df.loc[df['Caregiver Status'] == 0]
-    elif display_data == 'Caregivers':
-        data = df.loc[df['Caregiver Status'] == 1]
-    else:
-        data = df
+#     if display_data == 'General Population':
+#         data = df.loc[df['Caregiver Status'] == 0]
+#     elif display_data == 'Caregivers':
+#         data = df.loc[df['Caregiver Status'] == 1]
+#     else:
+#         data = df
+
+#     count = data.shape[0]
+#     st.markdown(f"Total Number of participants: {count}")
     
-    return data
+#     return data
 
 
 def get_response_data(responses_df, question_df, segmentation=None, skip_q=None):
