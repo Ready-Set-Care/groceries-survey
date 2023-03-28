@@ -27,6 +27,10 @@ def get_segmentation(segment_name, df):
             '\$50,000 - $99,999': df.loc[df['Annual Household Income'] == '$50,000 - $99,999'],
             '\$100,000 - $199,999': df.loc[df['Annual Household Income'] == '$100,000 - $199,999'],
             'More than $200,000': df.loc[df['Annual Household Income'] == 'More than $200,000'],
+        },
+        "Gender": {
+            "Female": df.loc[df['Variable: External: Q1: Gender'] == 'Female'],
+            "Male": df.loc[df['Variable: External: Q1: Gender'] == 'Male']
         }
     }
 

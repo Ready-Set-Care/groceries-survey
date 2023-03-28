@@ -42,7 +42,7 @@ def load_results_page(df, questions):
     with col1:
         selection = st.selectbox(
             "Segmentation:",
-            ('Not Segmented', 'Caregiver Status', 'Annual Household Income', "Community Classification"))
+            ('Not Segmented', 'Caregiver Status', 'Gender', 'Annual Household Income', "Community Classification"))
     with col2:
         display_data = st.radio(
             "Select the data:",
@@ -65,6 +65,9 @@ def load_results_page(df, questions):
     if selection == "Caregiver Status":
         segments = segmentation.get_segmentation("Caregiver Status", data)
         results.get_response_data(data, questions, segments)
+    elif selection == 'Gender':
+        segments = segmentation.get_segmentation("Gender", data)
+        results.get_response_data(data, questions, segments, 'Variable: External: Q1: Gender')
     elif selection == "Community Classification":
         segments = segmentation.get_segmentation("Community Classification", data)
         results.get_response_data(data, questions, segments, "Variable: External: Q3: _ Urban/Rural (self-report)")
