@@ -4,6 +4,7 @@ question_cols = [
     "Variable: External: Q1: Gender",
     "Variable: External: Q2: Age (write-in)",
     "Variable: External: Q3: _ Urban/Rural (self-report)",
+    "Variable: External: Q5: Annual Income (US)",
     "Variable: External: MainRegionName",
     "Variable: External: Food - Main Grocery Shop",
     ["Q3: _ Who do you grocery shop for?\nOption 1: Myself",
@@ -177,6 +178,7 @@ question_names = [
     "External Variable: Gender",
     "External Variable: Age (write-in)",
     "External Variable: Urban/Rural (self-report)",
+    "External Variable: Annual Household Income (US)",
     "External Variable: MainRegionName",
     "External Variable: Food - Main Grocery Shop",
     "1. Who do you grocery shop for?",
@@ -246,6 +248,7 @@ question_names = [
 question_types = [
     'Multiple Choice',
     'Number',
+    'Multiple Choice',
     'Multiple Choice',
     'Multiple Choice',
     'Skip',
