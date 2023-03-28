@@ -28,9 +28,13 @@ def prepare_data(path: str, caregivers=False) -> pd.DataFrame:
     }
     
     if caregivers:
-        df['Annual Household Income'] = df["Variable: External: Q7: Annual Income (US)"].map(income_map)
-    else:
-        df['Annual Household Income'] = df["Variable: External: Q5: Annual Income (US)"].map(income_map)
+        df.rename(
+            {"Variable: External: Q7: Annual Income (US)": "Variable: External: Q5: Annual Income (US)"},
+            axis='columns',
+            inplace=True
+            )
+
+    df['Annual Household Income'] = df["Variable: External: Q5: Annual Income (US)"].map(income_map)
 
     return df
 
