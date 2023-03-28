@@ -50,24 +50,6 @@ def combine_data(gen_pop, caregivers) -> pd.DataFrame:
 
     return df
 
-# def select_data(df):
-#     display_data = st.radio(
-#         "Select the data:",
-#         ("All", 'General Population', 'Caregivers')
-#     )
-    
-#     if display_data == 'General Population':
-#         data = df.loc[df['Caregiver Status'] == 0]
-#     elif display_data == 'Caregivers':
-#         data = df.loc[df['Caregiver Status'] == 1]
-#     else:
-#         data = df
-
-#     count = data.shape[0]
-#     st.markdown(f"Total Number of participants: {count}")
-    
-#     return data
-
 
 def get_response_data(responses_df, question_df, segmentation=None, skip_q=None):
 
