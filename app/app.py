@@ -20,7 +20,7 @@ def main():
         load_results_page(responses_df, questions_df)
 
 
-@st.cache # Caches the data and only run it if it has not been seen before
+@st.cache_data # Caches the data and only run it if it has not been seen before
 def load_data(): 
     #DATA_PATH = os.path.join(pathlib.Path(__file__).parent.resolve(), "data")
     DATA_URL = "https://raw.githubusercontent.com/Ready-Set-Care/groceries-survey/main/Data/"
@@ -29,30 +29,48 @@ def load_data():
     CAREGIVERS_PATH = DATA_URL + 'raw_caregivers.csv'
 
     gen_pop_df = results.prepare_data(GEN_POP_PATH)
-    caregiver_responses_df = results.prepare_data(CAREGIVERS_PATH)
-    questions_df = questions.get_question_df()
+    caregiver_responses_df = results.prepare_data(CAREGIVERS_PATH, caregivers=True)
+    questions_df = questions.create_question_df()
 
     responses_df = results.combine_data(gen_pop_df, caregiver_responses_df)
     
     return responses_df, questions_df
 
 def load_results_page(df, questions):
-
-    data = results.select_data(df)
-
-    selection = st.selectbox(
-        "Select the one of the segmentations:",
-        ('All Data', 'Caregivers v. General Pop', "Community Classification")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        selection = st.selectbox(
+            "Segmentation:",
+            ('Not Segmented', 'Caregiver Status', 'Annual Household Income', "Community Classification"))
+    with col2:
+        display_data = st.radio(
+            "Select the data:",
+            ("All", 'General Population', 'Caregivers')
         )
+        
+        if display_data == 'General Population':
+            data = df.loc[df['Caregiver Status'] == 0]
+        elif display_data == 'Caregivers':
+            data = df.loc[df['Caregiver Status'] == 1]
+        else:
+            data = df
 
+    count = data.shape[0]
+    st.markdown(f"**Total Number of participants:** {count}")    
+
+    
     st.markdown(f'## Survey Results for {selection}')
-
-    if selection == "Caregivers v. General Pop":
-        segments = segmentation.get_segmentation()
-        results.get_response_data(data, segments, "Q18")
+    
+    if selection == "Caregiver Status":
+        segments = segmentation.get_segmentation("Caregiver Status", data)
+        results.get_response_data(data, questions, segments)
     elif selection == "Community Classification":
-        segments = segmentation.get_segmentation("Community Classification", df)
-        results.get_response_data(data, segments, "Variable: External: Q3: _ Urban/Rural (self-report)")
+        segments = segmentation.get_segmentation("Community Classification", data)
+        results.get_response_data(data, questions, segments, "Variable: External: Q3: _ Urban/Rural (self-report)")
+    elif selection == 'Annual Household Income':
+        segments = segmentation.get_segmentation("Annual Household Income", data)
+        results.get_response_data(data, questions, segments, "External Variable: Annual Household Income (US)")
     else:
         results.get_response_data(data, questions)
 
